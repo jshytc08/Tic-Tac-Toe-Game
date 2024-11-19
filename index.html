@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="script.js"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="container mx-auto text-center">
+        <h1 class="text-4xl font-bold mb-8">Tic Tac Toe</h1>
+        <div class="mb-4">
+            <input id="playerXName" type="text" placeholder="Player X Name" class="border-2 border-gray-300 p-2 rounded-lg">
+            <input id="playerOName" type="text" placeholder="Player O Name" class="border-2 border-gray-300 p-2 rounded-lg ml-2">
+        </div>
+        <div id="instructions" class="text-2xl mb-4">Player X's turn</div>
+        <div id="board" class="grid grid-cols-3 gap-4 max-w-xs mx-auto mb-4">
+            <div class="cell w-24 h-24 bg-white border-2 border-gray-300 flex items-center justify-center text-2xl font-bold cursor-pointer rounded-lg hover:bg-gray-200"></div>
+            <div class="cell w-24 h-24 bg-white border-2 border-gray-300 flex items-center justify-center text-2xl font-bold cursor-pointer rounded-lg hover:bg-gray-200"></div>
+            <div class="cell w-24 h-24 bg-white border-2 border-gray-300 flex items-center justify-center text-2xl font-bold cursor-pointer rounded-lg hover:bg-gray-200"></div>
+            <div class="cell w-24 h-24 bg-white border-2 border-gray-300 flex items-center justify-center text-2xl font-bold cursor-pointer rounded-lg hover:bg-gray-200"></div>
+            <div class="cell w-24 h-24 bg-white border-2 border-gray-300 flex items-center justify-center text-2xl font-bold cursor-pointer rounded-lg hover:bg-gray-200"></div>
+            <div class="cell w-24 h-24 bg-white border-2 border-gray-300 flex items-center justify-center text-2xl font-bold cursor-pointer rounded-lg hover:bg-gray-200"></div>
+            <div class="cell w-24 h-24 bg-white border-2 border-gray-300 flex items-center justify-center text-2xl font-bold cursor-pointer rounded-lg hover:bg-gray-200"></div>
+            <div class="cell w-24 h-24 bg-white border-2 border-gray-300 flex items-center justify-center text-2xl font-bold cursor-pointer rounded-lg hover:bg-gray-200"></div>
+            <div class="cell w-24 h-24 bg-white border-2 border-gray-300 flex items-center justify-center text-2xl font-bold cursor-pointer rounded-lg hover:bg-gray-200"></div>
+        </div>
+        <div class="mb-4">
+            <button id="undoMove" class="bg-yellow-500 text-white px-4 py-2 rounded-lg ml-2">Undo</button>
+            <button id="resetGame" class="bg-red-500 text-white px-4 py-2 rounded-lg ml-2">Reset</button>
+        </div>
+        <div class="mb-4">
+            <h2 class="text-2xl font-bold">Scoreboard</h2>
+            <div id="scoreboard" class="text-xl">
+                <div id="playerXScore">Player X: 0</div>
+                <div id="playerOScore">Player O: 0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="resultModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+            <h2 id="resultMessage" class="text-2xl font-bold mb-4"></h2>
+            <button id="closeModal" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Close</button>
+        </div>
+    </div>
+</body>
+</html>
