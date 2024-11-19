@@ -15,6 +15,77 @@ document.addEventListener('DOMContentLoaded', () => {
     let moveHistory = [];
     let playerXScore = 0;
     let playerOScore = 0;
+    let playerXName = 'Player X';
+    let playerOName = 'Player O';
+    let originalPlayerXName = playerXName;
+    let originalPlayerOName = playerOName;
+
+    function swapRoles() {
+        [playerXName, playerOName] = [playerOName, playerXName];
+        playerXNameInput.value = playerXName;
+        playerONameInput.value = playerOName;
+        updateScoreboard();
+    }
+
+    function updateScoreboard() {
+        playerXScoreElement.textContent = `${originalPlayerXName}: ${playerXScore}`;
+        playerOScoreElement.textContent = `${originalPlayerOName}: ${playerOScore}`;
+    }
+
+    function checkWinner() {
+        const winningCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        for (const combination of winningCombinations) {
+            const [a, b, c] = combination;
+            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                return board[a];
+            }
+        }
+        return null;
+    }
+
+    function showResult(message) {
+        resultMessage.textContent = message;
+        resultModal.classList.remove('hidden');
+    }
+
+    function resetGame() {
+        board.fill(null);
+        moveHistory = [];
+        cells.forEach(cell => cell.textContent = '');
+        currentPlayer = 'X';
+        instructions.textContent = `${getCurrentPlayerName()}'s turn`;
+    }
+
+    function getCurrentPlayerName() {
+        return currentPlayer === 'X' ? playerXName : playerOName;
+    }
+
+    function updateScore(winner) {
+        if (winner === 'X') {
+            if (playerXName === originalPlayerXName) {
+                playerXScore++;
+            } else {
+                playerOScore++;
+            }
+        } else {
+            if (playerOName === originalPlayerOName) {
+                playerOScore++;
+            } else {
+                playerXScore++;
+            }
+        }
+        updateScoreboard();
+    }
 
     cells.forEach((cell, index) => {
         cell.addEventListener('click', () => {
@@ -22,9 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 cell.textContent = currentPlayer;
                 board[index] = currentPlayer;
                 moveHistory.push(index);
-                if (checkWinner()) {
-                    updateScore();
+                const winner = checkWinner();
+                if (winner) {
+                    updateScore(winner);
                     showResult(`${getCurrentPlayerName()} wins!`);
+                    swapRoles();
                 } else if (board.every(cell => cell)) {
                     showResult('It\'s a draw!');
                 } else {
@@ -55,55 +128,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     playerXNameInput.addEventListener('input', () => {
-        playerXScoreElement.textContent = `${playerXNameInput.value || 'Player X'}: ${playerXScore}`;
+        playerXName = playerXNameInput.value || 'Player X';
+        originalPlayerXName = playerXName;
+        updateScoreboard();
         if (currentPlayer === 'X') {
             instructions.textContent = `${getCurrentPlayerName()}'s turn`;
         }
     });
 
     playerONameInput.addEventListener('input', () => {
-        playerOScoreElement.textContent = `${playerONameInput.value || 'Player O'}: ${playerOScore}`;
+        playerOName = playerONameInput.value || 'Player O';
+        originalPlayerOName = playerOName;
+        updateScoreboard();
         if (currentPlayer === 'O') {
             instructions.textContent = `${getCurrentPlayerName()}'s turn`;
         }
     });
-
-    function checkWinner() {
-        const winningCombinations = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],
-            [0, 4, 8], [2, 4, 6]
-        ];
-        return winningCombinations.some(combination => {
-            const [a, b, c] = combination;
-            return board[a] && board[a] === board[b] && board[a] === board[c];
-        });
-    }
-
-    function showResult(message) {
-        resultMessage.textContent = message;
-        resultModal.classList.remove('hidden');
-    }
-
-    function resetGame() {
-        board.fill(null);
-        moveHistory = [];
-        cells.forEach(cell => cell.textContent = '');
-        currentPlayer = 'X';
-        instructions.textContent = `${getCurrentPlayerName()}'s turn`;
-    }
-
-    function getCurrentPlayerName() {
-        return currentPlayer === 'X' ? (playerXNameInput.value || 'Player X') : (playerONameInput.value || 'Player O');
-    }
-
-    function updateScore() {
-        if (currentPlayer === 'X') {
-            playerXScore++;
-            playerXScoreElement.textContent = `${playerXNameInput.value || 'Player X'}: ${playerXScore}`;
-        } else {
-            playerOScore++;
-            playerOScoreElement.textContent = `${playerONameInput.value || 'Player O'}: ${playerOScore}`;
-        }
-    }
 });
